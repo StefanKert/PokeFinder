@@ -1,0 +1,39 @@
+﻿@model PokeFinder.Models.PokemonListViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="table-responsive">
+            <table class="table-responsive table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>SpawnId</th>
+                        <th>Name</th>
+                        <th>ExpiresAt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pokemon in Model.Pokemon)
+            {
+                        <tr>
+                            <td>@pokemon.Id</td>
+                            <td>@pokemon.SpawnId</td>
+                            <td>@pokemon.Name</td>
+                            <td>@pokemon.ExpiresAt</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">Latitude: @Model.SearchRectangle.PrimaryLatLong.Latitude</div>
+        <div class="row">Longitude: @Model.SearchRectangle.PrimaryLatLong.Longitude</div>
+        <div class="row">Latitude: @Model.SearchRectangle.SecondaryLatLong.Latitude</div>
+        <div class="row">Longitude: @Model.SearchRectangle.SecondaryLatLong.Longitude</div>
+    </div>
+</div>
+
+@section scripts {
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDrGRILBvQGP7HK0CL15CmmQhklDtGn5o&callback=initMap"></script>
+}

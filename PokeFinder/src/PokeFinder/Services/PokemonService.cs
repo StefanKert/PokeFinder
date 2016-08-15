@@ -6,27 +6,31 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PokeFinder.Controllers;
-using PokeFinder.Models.Api;
+using PokeFinder.Misc;
+using PokeFinder.Models;
 
 namespace PokeFinder.Services
 {
     public class PokemonService: IPokemonService
     {
-        private async Task<IEnumerable<Pokemon>> ExecuteApiRequest(string latitude, string longitude) {
-            var url = $"https://api.fastpokemap.com/?lat={latitude}&lng={longitude}";
+        const string CACHE_URL = "https://cache.fastpokemap.com/?lat={0}&lng={1}";
+        const string API_URL = "https://api.fastpokemap.com/?lat={0}&lng={1}";
+
+        public async Task<IEnumerable<Pokemon>> ExecuteApiRequest(string latitude, string longitude) {
+            var url = string.Format(API_URL, latitude, longitude);
             var response = await GetResponseFromUrl(url);
             var stringResult = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<RootObject>(stringResult);
+            var obj = JsonConvert.DeserializeObject<Models.Api.RootObject>(stringResult);
             if (obj != null && obj.result.Count > 0)
                 return obj.result.Select(x => x.ToPokemon());
             return new List<Pokemon>();
         }
 
         public async Task<IEnumerable<Pokemon>> ExecuteCacheRequest(string latitude, string longitude) {
-            var url = $"https://cache.fastpokemap.com/?lat={latitude}&lng={longitude}";
+            var url = string.Format(CACHE_URL, latitude, longitude);
             var response = await GetResponseFromUrl(url);
-            var responseString = MiscExtensions.UnZipStr(response.Content.ReadAsByteArrayAsync().Result.Skip(2).ToArray());
-            var obj = JsonConvert.DeserializeObject<Models.Cache.RootObject[]>(responseString);
+            var stringResult = await response.Content.ReadAsUnzippedStringAsync();
+            var obj = JsonConvert.DeserializeObject<Models.Cache.RootObject[]>(stringResult);
             if (obj != null && obj.Length > 0)
                 return obj.Select(x => x.ToPokemon());
             return new List<Pokemon>();

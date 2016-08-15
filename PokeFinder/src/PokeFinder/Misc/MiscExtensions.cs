@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace PokeFinder.Controllers
+namespace PokeFinder.Misc
 {
     public static class MiscExtensions
     {
@@ -21,6 +25,11 @@ namespace PokeFinder.Controllers
 
                 return ms.ToArray();
             }
+        }
+
+        public static async Task<string> ReadAsUnzippedStringAsync(this HttpContent content) {
+            var bytes = await content.ReadAsByteArrayAsync();
+            return UnZipStr(bytes.Skip(2).ToArray());
         }
 
 

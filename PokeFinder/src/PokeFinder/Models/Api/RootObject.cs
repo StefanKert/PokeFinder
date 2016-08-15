@@ -3,16 +3,6 @@ using System.Collections.Generic;
 
 namespace PokeFinder.Models.Api
 {
-    public class Pokemon
-    {
-        public string SpawnId { get; set; }
-        public string Name { get; set; }
-        public int Id { get; set; }
-        public DateTime ExpiresAt { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-    }
-
     public class Result
     {
         public string spawn_point_id { get; set; }
