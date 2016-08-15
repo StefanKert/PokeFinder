@@ -3,3 +3,5 @@
 ################################################################################
 
 /PokeFinder/src/PokeFinder/bin/Debug
+/PokeFinder/.vs
+/PokeFinder/src/PokeFinder/obj/Debug

@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AF8C794B-86DE-497C-A62A-3C9354CD4630}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4040C51A-0699-4508-A41A-0BCAF27005A6}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PokeFinder", "src\PokeFinder\PokeFinder.xproj", "{1F2A03F0-870D-47FB-9450-680D2B72756C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F2A03F0-870D-47FB-9450-680D2B72756C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F2A03F0-870D-47FB-9450-680D2B72756C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F2A03F0-870D-47FB-9450-680D2B72756C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F2A03F0-870D-47FB-9450-680D2B72756C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F2A03F0-870D-47FB-9450-680D2B72756C} = {AF8C794B-86DE-497C-A62A-3C9354CD4630}
+	EndGlobalSection
+EndGlobal
