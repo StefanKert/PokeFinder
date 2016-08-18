@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PokeFinder", "src\PokeFinder\PokeFinder.xproj", "{1F2A03F0-870D-47FB-9450-680D2B72756C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeFinder.Domain", "src\PokeFinder.Domain\PokeFinder.Domain.csproj", "{F9179EC7-2940-430D-81E5-7D73096A89EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeFinder.WPF", "src\PokeFinder.WPF\PokeFinder.WPF.csproj", "{D8672B9B-6010-4C97-8B96-16C88F0FD556}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,11 +26,21 @@ Global
 		{1F2A03F0-870D-47FB-9450-680D2B72756C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F2A03F0-870D-47FB-9450-680D2B72756C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F2A03F0-870D-47FB-9450-680D2B72756C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9179EC7-2940-430D-81E5-7D73096A89EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9179EC7-2940-430D-81E5-7D73096A89EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9179EC7-2940-430D-81E5-7D73096A89EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9179EC7-2940-430D-81E5-7D73096A89EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8672B9B-6010-4C97-8B96-16C88F0FD556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8672B9B-6010-4C97-8B96-16C88F0FD556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8672B9B-6010-4C97-8B96-16C88F0FD556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8672B9B-6010-4C97-8B96-16C88F0FD556}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1F2A03F0-870D-47FB-9450-680D2B72756C} = {AF8C794B-86DE-497C-A62A-3C9354CD4630}
+		{F9179EC7-2940-430D-81E5-7D73096A89EC} = {AF8C794B-86DE-497C-A62A-3C9354CD4630}
+		{D8672B9B-6010-4C97-8B96-16C88F0FD556} = {AF8C794B-86DE-497C-A62A-3C9354CD4630}
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,8 @@ namespace PokeFinder
     {
         public Startup(IHostingEnvironment env)
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+            Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)

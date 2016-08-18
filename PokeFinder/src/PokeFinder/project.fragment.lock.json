@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "exports": {
+    "PokeFinder.Domain/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.5.2",
+      "compile": {
+        "bin/Debug/PokeFinder.Domain.dll": {}
+      },
+      "runtime": {
+        "../../packages/Newtonsoft.Json.9.0.1/lib/net45/Newtonsoft.Json.dll": {},
+        "bin/Debug/PokeFinder.Domain.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/PokeFinder.Domain.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}

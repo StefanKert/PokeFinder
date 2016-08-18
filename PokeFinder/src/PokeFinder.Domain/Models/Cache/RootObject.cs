@@ -29,7 +29,8 @@ namespace PokeFinder.Models.Cache
                 Id = PokemonList.GetPokemonIdForNameDictionary()[pokemon_id],
                 ExpiresAt = DateTime.Parse(expireAt),
                 Longitude = lnglat.coordinates[0],
-                Latitude = lnglat.coordinates[1]
+                Latitude = lnglat.coordinates[1],
+                PokemonType = PokemonType.Cache
             };
         }
     }

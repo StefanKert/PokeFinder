@@ -12,8 +12,10 @@ namespace PokeFinder.Models.Api
         public double latitude { get; set; }
         public double longitude { get; set; }
 
-        public Pokemon ToPokemon() {
-            return new Pokemon {
+        public Pokemon ToPokemon()
+        {
+            var pokemon = new Pokemon
+            {
                 SpawnId = spawn_point_id,
                 Name = pokemon_id,
                 Id = PokemonList.GetPokemonIdForNameDictionary()[pokemon_id],
@@ -21,6 +23,12 @@ namespace PokeFinder.Models.Api
                 Latitude = latitude,
                 Longitude = longitude
             };
+            pokemon.PokemonType = string.IsNullOrEmpty(spawn_point_id) ? PokemonType.Nearby : PokemonType.Api;
+            if (expiration_timestamp_ms != null)
+                pokemon.ExpiresAt = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(long.Parse(expiration_timestamp_ms) / 1000d).ToLocalTime();
+
+
+            return pokemon;
         }
     }
 

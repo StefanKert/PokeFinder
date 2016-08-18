@@ -1,4 +1,4 @@
-﻿{
+{
   "dependencies": {
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
@@ -28,7 +28,13 @@
   },
 
   "frameworks": {
-    "net461": {}
+    "net461": {
+      "dependencies": {
+        "PokeFinder.Domain": {
+          "target": "project"
+        }
+      }
+    }
   },
 
   "buildOptions": {

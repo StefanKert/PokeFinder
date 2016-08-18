@@ -5,3 +5,9 @@
 /PokeFinder/src/PokeFinder/bin/Debug
 /PokeFinder/.vs
 /PokeFinder/src/PokeFinder/obj/Debug
+/PokeFinder/packages
+*.log
+/PokeFinder/src/PokeFinder.Domain/bin/Debug
+/PokeFinder/src/PokeFinder.Domain/obj/Debug
+/PokeFinder/src/PokeFinder.WPF/bin/Debug
+/PokeFinder/src/PokeFinder.WPF/obj/Debug

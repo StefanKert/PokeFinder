@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.ApplicationInsights.Extensibility
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -30,6 +31,13 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/system.js"></script>
+        <script src="~/js/rx.js"></script>
+        <script src="~/js/typescript.js"></script>
+        <script src="~/js/angular2/angular2.dev.js"></script>
+        <script src="~/js/angular2/angular2-polyfills.js"></script>
+        <script src="~/js/angular2/http.dev.js"></script>
+        <script src="~/js/angular2/router.dev.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -41,8 +49,27 @@
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/system.min.js"></script>
+        <script src="~/js/rx.min.js"></script>
+        <script src="~/js/typescript.min.js"></script>
+        <script src="~/js/angular2/angular2.dev.min.js"></script>
+        <script src="~/js/angular2/angular2-polyfills.min.js"></script>
+        <script src="~/js/angular2/http.dev.min.js"></script>
+        <script src="~/js/angular2/router.dev.min.js"></script>
     </environment>
-
+    <!-- Configure SystemJS -->
+    <script>
+            System.config({
+                packages: {
+                    app: {
+                        format: 'register',
+                        defaultExtension: 'js'
+                    }
+                }
+            });
+            System.import('../app/boot.js')
+                  .then(null, console.error.bind(console));
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

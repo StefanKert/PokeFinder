@@ -19,6 +19,11 @@ namespace PokeFinder.Controllers
             _pokemonService = pokemonService;
         }
 
+        public async Task<IActionResult> AngularIndex()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Index() {
             return View();
         }
@@ -26,11 +31,11 @@ namespace PokeFinder.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(SearchRectangle rectangle)
         {
-            var longitude1 = double.Parse(rectangle.PrimaryLatLong.Longitude);
-            var latitude1 = double.Parse(rectangle.PrimaryLatLong.Longitude);
+            var longitude1 = rectangle.PrimaryLatLong.Longitude;
+            var latitude1 = rectangle.PrimaryLatLong.Latitude;
 
-            var longitude2 = double.Parse(rectangle.SecondaryLatLong.Longitude);
-            var latitude2 = double.Parse(rectangle.SecondaryLatLong.Longitude);
+            var longitude2 = rectangle.SecondaryLatLong.Longitude;
+            var latitude2 = rectangle.SecondaryLatLong.Latitude;
 
             double higherLatitude = latitude1 > latitude2 ? latitude1 : latitude2;
             double lowLatitude = latitude1 > latitude2 ? latitude2 : latitude1;
@@ -46,8 +51,8 @@ namespace PokeFinder.Controllers
                 {
                     var i1 = i.ToString("G");
                     var j1 = j.ToString("G");
-                    tasks.Add(_pokemonService.ExecuteCacheRequest(j1, i1));
-                    //tasks.Add(_pokemonService.ExecuteApiRequest(j1, i1));
+                    tasks.Add(_pokemonService.ExecuteCacheRequest(i1, j1));
+                    tasks.Add(_pokemonService.ExecuteApiRequest(i1, j1));
                     j += 0.0020;
                 } while (j < higherLongitude);
             }
