@@ -12,8 +12,8 @@ namespace PokeFinder.Services
 {
     public class PokemonService: IPokemonService
     {
-        const string CACHE_URL = "https://cache.fastpokemap.com/?lat={0}&lng={1}";
-        const string API_URL = "https://api.fastpokemap.com/?lat={0}&lng={1}";
+        const string CACHE_URL = "https://cache.fastpokemap.se/?lat={0}&lng={1}";
+        const string API_URL = "https://api.fastpokemap.se/?lat={0}&lng={1}";
 
         public async Task<IEnumerable<Pokemon>> ExecuteApiRequest(string latitude, string longitude) {
             try {
@@ -26,7 +26,7 @@ namespace PokeFinder.Services
                 return new List<Pokemon>();
             }
             catch (Exception ex) {
-                Console.WriteLine("WARNING: "+ ex);
+                OnException?.Invoke(ex);
                 return new List<Pokemon>();
             }
         }
@@ -42,7 +42,7 @@ namespace PokeFinder.Services
                 return new List<Pokemon>();
             }
             catch (Exception ex) {
-                Console.WriteLine("WARNING: " + ex);
+                OnException?.Invoke(ex);
                 return new List<Pokemon>();
             }
         }
@@ -55,11 +55,13 @@ namespace PokeFinder.Services
         }
 
         private void InitClient(HttpClient client) {
-            client.DefaultRequestHeaders.Add("Origin", "https://fastpokemap.com");
-            client.DefaultRequestHeaders.Referrer = new Uri("https://fastpokemap.com/secret/");
-            client.DefaultRequestHeaders.Host = "api.fastpokemap.com";
+            client.DefaultRequestHeaders.Add("Origin", "https://fastpokemap.se");
+            client.DefaultRequestHeaders.Referrer = new Uri("https://fastpokemap.se");
             client.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             client.Timeout = TimeSpan.FromMinutes(1);
         }
+
+
+        public event Action<Exception> OnException;
     }
 }

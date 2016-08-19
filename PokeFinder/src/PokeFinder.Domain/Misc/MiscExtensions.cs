@@ -28,7 +28,8 @@ namespace PokeFinder.Misc
 
         public static async Task<string> ReadAsUnzippedStringAsync(this HttpContent content) {
             var bytes = await content.ReadAsByteArrayAsync();
-            return UnZipStr(bytes.Skip(2).ToArray());
+            var result = Encoding.UTF8.GetString(bytes);
+            return result;
         }
 
 
@@ -36,7 +37,7 @@ namespace PokeFinder.Misc
         {
             using (MemoryStream inputStream = new MemoryStream(input))
             {
-                using (DeflateStream gzip = new DeflateStream(inputStream, CompressionMode.Decompress))
+                using (var gzip = new DeflateStream(inputStream, CompressionMode.Decompress))
                 {
                     return Encoding.UTF8.GetString(gzip.ReadAsBytes());
                 }

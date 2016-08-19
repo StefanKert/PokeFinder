@@ -31,10 +31,9 @@ namespace PokeFinder.WPF
         private List<Pokemon> Visible_Pokemon = new List<Pokemon>();
         private List<Pokemon> Nearby_Pokemon = new List<Pokemon>();
 
-        private readonly Dictionary<string, int> pokemonIdKeyValuePair = new Dictionary<string, int>();
         private readonly Dictionary<int, string> pokemonPng = new Dictionary<int, string>();
 
-        private IPokemonService _pokemonService = new PokemonService();
+        private readonly IPokemonService _pokemonService = new PokemonService();
 
         public MainWindow() {
             InitializeComponent();
@@ -43,9 +42,13 @@ namespace PokeFinder.WPF
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
 
+            Interval.Text = "0.001";
+            // ST johann
+            //TbPoint1.Text = "47.3505269339223,13.201210498809816";
+            //TbPoint2.Text = "47.34212340756677,13.206746578216555";
 
-            TbPoint1.Text = "47.93858505548714,13.067679405212404";
-            TbPoint2.Text = "47.93151203754578,13.082399368286133";
+            TbPoint1.Text = "47.939993793103035,13.064954280853271";
+            TbPoint2.Text = "47.93204398514115,13.088707923889162";
 
             var pokemons = new HttpClient().GetStringAsync("https://gist.githubusercontent.com/anonymous/50c284e815df6c81aa53497a305a29f2/raw").Result.Split('\n');
             foreach (string t in pokemons) {
@@ -54,8 +57,10 @@ namespace PokeFinder.WPF
                     pokemonPng.Add(Convert.ToInt32(data[0]), data[1]);
                 }
             }
-
-            pokemonIdKeyValuePair = PokemonList.GetPokemonIdForNameDictionary();
+            _pokemonService.OnException += exception => {
+                PokemonLoadingFailedMessage.Text = exception.ToString();
+                PokemonLoadingFailedMessage.Visibility = Visibility.Visible;
+            };
         }
 
         private void InitClient(HttpClient client) {
@@ -85,7 +90,7 @@ namespace PokeFinder.WPF
                 var latitude2 = double.Parse(point2[0]);
                 var longitude2 = double.Parse(point2[1]);
 
-                await LoadPokemon(latitude1, longitude1, latitude2, longitude2);
+                await LoadPokemon(latitude1, longitude1, latitude2, longitude2, double.Parse(Interval.Text));
                 PokemonLoadingSucceededMessage.Visibility = Visibility.Visible;
                 PokemonLoadingMessage.Visibility = Visibility.Collapsed;
                 LoadPokemonButton.IsEnabled = true;
@@ -98,7 +103,7 @@ namespace PokeFinder.WPF
             }
         }
 
-        private async Task LoadPokemon(double latitude1, double longitude1, double latitude2, double longitude2) {
+        private async Task LoadPokemon(double latitude1, double longitude1, double latitude2, double longitude2, double interval) {
             double higherLatitude = latitude1 > latitude2 ? latitude1 : latitude2;
             double lowLatitude = latitude1 > latitude2 ? latitude2 : latitude1;
             double higherLongitude = longitude1 > longitude2 ? longitude1 : longitude2;
@@ -106,14 +111,14 @@ namespace PokeFinder.WPF
 
             var tasks = new List<Task>();
 
-            for (double i = lowLatitude; i < higherLatitude; i += 0.001) {
+            for (double i = lowLatitude; i < higherLatitude; i += interval) {
                 double j = lowerLongitude;
                 do {
                     var i1 = i.ToString("G");
                     var j1 = j.ToString("G");
                     tasks.Add(ExecuteCacheRequest(j1, i1));
                     tasks.Add(ExecuteApiRequest(j1, i1));
-                    j += 0.0020;
+                    j += interval;
                 } while (j < higherLongitude);
             }
 
