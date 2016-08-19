@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using Newtonsoft.Json;
 
 namespace PokeFinder.Models
@@ -159,8 +161,24 @@ namespace PokeFinder.Models
     'MEW': 151
 }";
 
+        public static Dictionary<int, string> PokemonPng;
+
         public static Dictionary<string, int> GetPokemonIdForNameDictionary() {
             return JsonConvert.DeserializeObject<Dictionary<string, int>>(pokemonIdString);
+        }
+
+        public static string GetPngForPokemonId(int id) {
+            if (PokemonPng == null) {
+                PokemonPng = new Dictionary<int, string>();
+                var pokemons = new HttpClient().GetStringAsync("https://gist.githubusercontent.com/anonymous/50c284e815df6c81aa53497a305a29f2/raw").Result.Split('\n');
+                foreach (string t in pokemons) {
+                    var data = t.Split(':');
+                    if (data.Length == 2) {
+                        PokemonPng.Add(Convert.ToInt32(data[0]), data[1]);
+                    }
+                }
+            }
+            return PokemonPng[id];
         }
     }
 }

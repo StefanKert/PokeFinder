@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
+        x:Name="Window"
         Title="MainWindow" SizeToContent="WidthAndHeight" MinWidth="500">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -15,8 +17,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0"  Orientation="Vertical">
-            <Label FontSize="15" Content="Interval" Margin="10,5"/>
-            <TextBox  x:Name="Interval" Margin="10" Padding="5" VerticalContentAlignment="Center"/>
+            <Label FontSize="15" Content="Scan Distance" Margin="10,5"/>
+            <TextBox  x:Name="ScanDistance" Margin="10" Padding="5" VerticalContentAlignment="Center"/>
             <Label FontSize="15" Content="First Point" Margin="10,5"/>
             <TextBox  x:Name="TbPoint1" Margin="10" Padding="5" VerticalContentAlignment="Center"/>
             <Label FontSize="15" Content="Second Point" Margin="10,0"/>
@@ -28,15 +30,41 @@
             </ScrollViewer>
         </StackPanel>
 
-
-        <Button x:Name="LoadPokemonButton" Grid.Row="1" Click="ButtonBase_OnClick" Content="Load" Margin="10"/>
-        <Label FontSize="20" Grid.Row="2" Grid.ColumnSpan="2" Margin="10,0" >Nearby Pokemon</Label>
-        <ScrollViewer  Grid.Row="3" Grid.ColumnSpan="2" >
-        <WrapPanel x:Name="NearByPokemon" Orientation="Horizontal" Margin="10"></WrapPanel>
+        <Button x:Name="LoadPokemonButton" Grid.Row="2" Click="ButtonBase_OnClick" Content="Load" Margin="10"/>
+        <Label FontSize="20" Grid.Row="3" Grid.ColumnSpan="2" Margin="10,0" >Nearby Pokemon</Label>
+        <ScrollViewer  Grid.Row="4" Grid.ColumnSpan="2" >
+            <ItemsControl ItemsSource="{Binding ElementName=Window, Path=NearbyPokemon, UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" Margin="10"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Image Width="40" Source="{Binding PictureStream}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
-        <Label FontSize="20" Grid.Row="4" Grid.ColumnSpan="2" Margin="10,0" >Visible Pokemon</Label>
-        <ScrollViewer  Grid.Row="5" Grid.ColumnSpan="2" >
-            <WrapPanel x:Name="VisiblePokemon" Orientation="Horizontal" Margin="10"></WrapPanel>
+        <Label FontSize="20" Grid.Row="5" Grid.ColumnSpan="2" Margin="10,0" >Visible Pokemon</Label>
+        <ScrollViewer  Grid.Row="6" Grid.ColumnSpan="2" >
+            <ItemsControl ItemsSource="{Binding ElementName=Window, Path=VisiblePokemon, UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" Margin="10"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding ExpiresAt.TimeOfDay, StringFormat=HH\\:mm:ss}"/>
+                            <Image Width="40" MouseDown="UIElement_OnMouseDown" Tag="{Binding SpawnId}" Source="{Binding PictureStream}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </Window>

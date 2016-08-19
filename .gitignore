@@ -11,3 +11,9 @@
 /PokeFinder/src/PokeFinder.Domain/obj/Debug
 /PokeFinder/src/PokeFinder.WPF/bin/Debug
 /PokeFinder/src/PokeFinder.WPF/obj/Debug
+/PokeFinder/src/PokeFinder/bin/Release/net461
+/PokeFinder/src/PokeFinder.Domain/bin/Release
+/PokeFinder/src/PokeFinder.Domain/obj/Release
+/PokeFinder/src/PokeFinder.WPF/bin/Release
+/PokeFinder/src/PokeFinder.WPF/obj/Release
+/PokeFinder/src/PokeFinder/obj/Release/net461

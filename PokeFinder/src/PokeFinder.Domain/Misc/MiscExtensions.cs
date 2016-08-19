@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -42,6 +44,14 @@ namespace PokeFinder.Misc
                     return Encoding.UTF8.GetString(gzip.ReadAsBytes());
                 }
             }
+        }
+
+        public static void AddSorted<T>(this IList<T> list, T item, Func<T, T, bool> compareItemToList) {
+            int i = 0;
+            while (i < list.Count && compareItemToList(item, list[i]))
+                i++;
+
+            list.Insert(i, item);
         }
     }
 }
