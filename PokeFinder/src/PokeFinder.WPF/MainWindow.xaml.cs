@@ -29,6 +29,7 @@ namespace PokeFinder.WPF
     /// </summary>
     public partial class MainWindow: Window
     {
+        private object _lock = new object();
         private readonly IPokemonService _pokemonService = new PokemonService();
 
         public ObservableCollection<Pokemon> VisiblePokemon { get; } = new ObservableCollection<Pokemon>();
@@ -92,18 +93,21 @@ namespace PokeFinder.WPF
             var lowerLongitude = longitude1 > longitude2 ? longitude2 : longitude1;
 
             var tasks = new List<Task>();
-
+            
             for (var i = lowLatitude; i < higherLatitude; i += interval) {
                 var j = lowerLongitude;
                 do {
                     var i1 = i.ToString("G");
                     var j1 = j.ToString("G");
-                    tasks.Add(ExecuteCacheRequest(j1, i1));
-                    tasks.Add(ExecuteApiRequest(j1, i1));
+                    var cacheTask = Task.Run(() => ExecuteCacheRequest(j1, i1));
+                    var apiTask = Task.Run(() => ExecuteApiRequest(j1, i1));
+                    tasks.Add(cacheTask);
+                    tasks.Add(apiTask);
                     j += interval;
                 } while (j < higherLongitude);
             }
 
+            Console.WriteLine(tasks.Count + " Threads to start.");
             await Task.WhenAll(tasks.ToArray());
         }
 
@@ -111,7 +115,9 @@ namespace PokeFinder.WPF
             try {
                 var pokemons = await _pokemonService.ExecuteCacheRequest(latitude, longitude);
                 foreach (var pokemon in pokemons) {
-                    AddPokemon(pokemon);
+                    lock (_lock) {
+                        AddPokemon(pokemon);
+                    }
                 }
             }
             catch (Exception ex) {
@@ -126,7 +132,9 @@ namespace PokeFinder.WPF
             try {
                 var pokemons = await _pokemonService.ExecuteApiRequest(latitude, longitude);
                 foreach (var pokemon in pokemons) {
-                    AddPokemon(pokemon);
+                    lock (_lock) {
+                        AddPokemon(pokemon);
+                    }
                 }
             }
             catch (Exception ex) {
@@ -142,13 +150,14 @@ namespace PokeFinder.WPF
                 return;
             if (pokemon.PokemonType == PokemonType.Nearby && NearbyPokemon.Any(x => x.Id == pokemon.Id))
                 return;
-
-            if (pokemon.PokemonType == PokemonType.Nearby) {
-                NearbyPokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
-            }
-            else {
-                VisiblePokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
-            }
+            Dispatcher.Invoke(() => {
+                if (pokemon.PokemonType == PokemonType.Nearby) {
+                    NearbyPokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
+                }
+                else {
+                    VisiblePokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
+                }
+            });
         }
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e) {
