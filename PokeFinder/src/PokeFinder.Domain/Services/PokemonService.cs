@@ -58,7 +58,7 @@ namespace PokeFinder.Services
             client.DefaultRequestHeaders.Add("Origin", "https://fastpokemap.se");
             client.DefaultRequestHeaders.Referrer = new Uri("https://fastpokemap.se");
             client.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-            client.Timeout = TimeSpan.FromMinutes(1);
+            client.Timeout = TimeSpan.FromMinutes(2);
         }
 
 

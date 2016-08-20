@@ -59,7 +59,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="10">
-                            <TextBlock Text="{Binding ExpiresAt.TimeOfDay, StringFormat=HH\\:mm:ss}"/>
+                            <TextBlock Text="{Binding ExpiresAt.TimeOfDay, StringFormat=hh\\:mm}"/>
                             <Image Width="40" MouseDown="UIElement_OnMouseDown" Tag="{Binding SpawnId}" Source="{Binding PictureStream}"/>
                         </StackPanel>
                     </DataTemplate>

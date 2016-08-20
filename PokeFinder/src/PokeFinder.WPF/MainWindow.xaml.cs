@@ -29,9 +29,6 @@ namespace PokeFinder.WPF
     /// </summary>
     public partial class MainWindow: Window
     {
-        private object _nearbyLock = new object();
-        private object _visibleLock = new object();
-
         private readonly IPokemonService _pokemonService = new PokemonService();
 
         public ObservableCollection<Pokemon> VisiblePokemon { get; } = new ObservableCollection<Pokemon>();
@@ -45,11 +42,11 @@ namespace PokeFinder.WPF
 
             ScanDistance.Text = "0.001";
             // ST johann
-            //TbPoint1.Text = "47.3505269339223,13.201210498809816";
-            //TbPoint2.Text = "47.34212340756677,13.206746578216555";
+            TbPoint1.Text = "47.3505269339223,13.201210498809816";
+            TbPoint2.Text = "47.34212340756677,13.206746578216555";
 
-            TbPoint1.Text = "47.939993793103035,13.064954280853271";
-            TbPoint2.Text = "47.93204398514115,13.088707923889162";
+            //TbPoint1.Text = "47.939993793103035,13.064954280853271";
+            //TbPoint2.Text = "47.93204398514115,13.088707923889162";
 
             _pokemonService.OnException += exception => {
                 PokemonLoadingFailedMessage.Text = exception.ToString();
