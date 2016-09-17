@@ -36,9 +36,10 @@ namespace PokeFinder.WPF
         public ObservableCollection<Pokemon> NearbyPokemon { get; } = new ObservableCollection<Pokemon>();
 
 
-  
+
         public MainWindow() {
             InitializeComponent();
+            PokemonList.InitList();
             DataContext = this;
 
             ScanDistance.Text = "0.001";
@@ -50,8 +51,10 @@ namespace PokeFinder.WPF
             //TbPoint2.Text = "47.93204398514115,13.088707923889162";
 
             _pokemonService.OnException += exception => {
-                PokemonLoadingFailedMessage.Text = exception.ToString();
-                PokemonLoadingFailedMessage.Visibility = Visibility.Visible;
+                Dispatcher.Invoke(() => {
+                    PokemonLoadingFailedMessage.Text += "\n" + exception.Message;
+                    PokemonLoadingFailedMessage.Visibility = Visibility.Visible;
+                });
             };
         }
 
@@ -93,7 +96,7 @@ namespace PokeFinder.WPF
             var lowerLongitude = longitude1 > longitude2 ? longitude2 : longitude1;
 
             var tasks = new List<Task>();
-            
+
             for (var i = lowLatitude; i < higherLatitude; i += interval) {
                 var j = lowerLongitude;
                 do {
@@ -146,19 +149,25 @@ namespace PokeFinder.WPF
         }
 
         private void AddPokemon(Pokemon pokemon) {
-            if (pokemon.PokemonType != PokemonType.Nearby && VisiblePokemon.Any(x => x.SpawnId == pokemon.SpawnId))
-                return;
-            if (pokemon.PokemonType == PokemonType.Nearby && NearbyPokemon.Any(x => x.Id == pokemon.Id))
-                return;
-            Dispatcher.Invoke(() => {
-                if (pokemon.PokemonType == PokemonType.Nearby) {
-                    NearbyPokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
-                }
-                else {
-                    VisiblePokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
-                }
-            });
+            try {
+                if (pokemon.PokemonType != PokemonType.Nearby && VisiblePokemon.Any(x => x.SpawnId == pokemon.SpawnId))
+                    return;
+                if (pokemon.PokemonType == PokemonType.Nearby && NearbyPokemon.Any(x => x.Id == pokemon.Id))
+                    return;
+                Dispatcher.Invoke(() => {
+                    if (pokemon.PokemonType == PokemonType.Nearby) {
+                        NearbyPokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
+                    }
+                    else {
+                        VisiblePokemon.AddSorted(pokemon, (x, y) => x.Id >= y.Id);
+                    }
+                });
+            }
+            catch (Exception ex) {
+                throw;
+            }
         }
+
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e) {
             var image = sender as Image;

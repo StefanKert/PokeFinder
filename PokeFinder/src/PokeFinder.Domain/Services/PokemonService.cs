@@ -12,12 +12,15 @@ namespace PokeFinder.Services
 {
     public class PokemonService: IPokemonService
     {
-        const string CACHE_URL = "https://cache.fastpokemap.se/?lat={0}&lng={1}";
-        const string API_URL = "https://api.fastpokemap.se/?lat={0}&lng={1}";
+        private static HttpClient _httpClientInstance;
+        public static HttpClient HttpClient => _httpClientInstance ?? (_httpClientInstance = InitClient());
+
+        const string _CACHE_URL = "https://cache.fastpokemap.se/?lat={0}&lng={1}";
+        const string _API_URL = "https://api.fastpokemap.se/?lat={0}&lng={1}";
 
         public async Task<IEnumerable<Pokemon>> ExecuteApiRequest(string latitude, string longitude) {
             try {
-                var url = string.Format(API_URL, latitude, longitude);
+                var url = string.Format(_API_URL, latitude, longitude);
                 var response = await GetResponseFromUrl(url);
                 var stringResult = await response.Content.ReadAsStringAsync();
                 var obj = JsonConvert.DeserializeObject<Models.Api.RootObject>(stringResult);
@@ -33,7 +36,7 @@ namespace PokeFinder.Services
 
         public async Task<IEnumerable<Pokemon>> ExecuteCacheRequest(string latitude, string longitude) {
             try {
-                var url = string.Format(CACHE_URL, latitude, longitude);
+                var url = string.Format(_CACHE_URL, latitude, longitude);
                 var response = await GetResponseFromUrl(url);
                 var stringResult = await response.Content.ReadAsUnzippedStringAsync();
                 var obj = JsonConvert.DeserializeObject<Models.Cache.RootObject[]>(stringResult);
@@ -48,17 +51,16 @@ namespace PokeFinder.Services
         }
 
         private async Task<HttpResponseMessage> GetResponseFromUrl(string url) {
-            using (var client = new HttpClient()) {
-                InitClient(client);
-                return await client.GetAsync(url);
-            }
+            return await HttpClient.GetAsync(url);
         }
 
-        private void InitClient(HttpClient client) {
+        private static HttpClient InitClient() {
+            var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Origin", "https://fastpokemap.se");
             client.DefaultRequestHeaders.Referrer = new Uri("https://fastpokemap.se");
             client.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             client.Timeout = TimeSpan.FromMinutes(2);
+            return client;
         }
 
 
